@@ -9,13 +9,13 @@ public class PerformanceTests {
 
     int totalRows = EmployeeList.dataSetSize;
 
-    /*@Test
+    @Test
     public void timingSingleThread() {
         EmployeesDAO.dropTable();
         EmployeesDAO.createTable();
         EmployeesDAO.updateTable();
         Printer.line();
-    }*/
+    }
 
     @Test
     public void timingQuadThread() {
