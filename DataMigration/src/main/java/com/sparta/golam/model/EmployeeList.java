@@ -10,7 +10,7 @@ import java.util.ArrayList;
 public class EmployeeList {
 
     static ArrayList<String[]> startingData = FilterIDs.findOriginalIDs();
-    static int dataSetSize = startingData.size();
+    public static int dataSetSize = startingData.size();
 
     static Employee[] employeeArray = new Employee[dataSetSize];
 

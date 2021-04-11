@@ -16,4 +16,8 @@ public class Printer {
         System.out.println(Arrays.toString(arrayToPrint));
     }
 
+    public static void line() {
+        System.out.println();
+    }
+
 }

@@ -28,7 +28,4 @@ public class FileReader {
         return data;
     }
 
-    public static void threading() {
-
-    }
 }

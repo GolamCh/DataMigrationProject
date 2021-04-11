@@ -17,7 +17,7 @@ public class EmployeesDAO {
 
     private static Properties properties = new Properties();
 
-    public static Connection connectToDatabase(){
+    private static Connection connectToDatabase(){
         try {
             properties.load(new FileReader("resources/login.properties"));
             connection = DriverManager.getConnection(URL,properties.getProperty("username"),properties.getProperty("password"));
@@ -27,6 +27,41 @@ public class EmployeesDAO {
             throwables.printStackTrace();
         }
         return connection;
+    }
+
+    public static void createTable() {
+        try {
+            Statement statement = connectToDatabase().createStatement();
+            statement.executeUpdate(sqlQueries.createTable);
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+        Printer.print("The employees table has been created successfully");
+    }
+
+    public static int countRows() {
+        Statement statement = null;
+
+        try {
+            statement = connectToDatabase().createStatement();
+            ResultSet resultSet = statement.executeQuery(sqlQueries.countRows);
+            resultSet.next();
+            return resultSet.getInt("COUNT(*)");
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+        return 0;
+    }
+
+
+    public static void dropTable() {
+        try {
+            Statement statement = connectToDatabase().createStatement();
+            statement.executeUpdate(sqlQueries.dropTable);
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+        Printer.print("The employees table has been removed sucessfully");
     }
 
     public static void updateTable() {
@@ -79,7 +114,7 @@ public class EmployeesDAO {
     }
 
 
-    public static void Concurrent() {
+    public static void fourThreadConcurrent() {
         EmployeeList.quarterArrays();
 
         TaskOne taskOne = new TaskOne();
@@ -93,18 +128,21 @@ public class EmployeesDAO {
         Thread threadFour = new Thread(taskFour);
 
         threadOne.start();
+        //Printer.print("Thread 1 has started...");
         threadTwo.start();
+        //Printer.print("Thread 2 has started...");
         threadThree.start();
+        //Printer.print("Thread 3 has started...");
         threadFour.start();
-
+        //Printer.print("Thread 4 has started...");
     }
 
-    //public static int start;
 
     public static void customConcurrent(int threads) {
         int start;
         start = 0;
         int incrementSize = EmployeeList.dataSetSize/threads;
+        int x = 1;
 
         for (int i = 0; i < threads; i++) {
             if (i < threads - 1) {
@@ -119,6 +157,7 @@ public class EmployeesDAO {
                 Task task = new Task();
                 Thread thread = new Thread(task);
                 thread.start();
+                //Printer.print("Thread " + x++ + " has started");
 
                 start+=incrementSize;
             } else {
@@ -133,8 +172,13 @@ public class EmployeesDAO {
                 Task task = new Task();
                 Thread thread = new Thread(task);
                 thread.start();
-
+                //Printer.print("Thread " + x++ + " has started");
             }
+        }
+        try {
+            connectToDatabase().close();
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
         }
     }
 
